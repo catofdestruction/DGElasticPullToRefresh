@@ -31,13 +31,12 @@ public struct DGElasticPullToRefreshConstants {
     struct KeyPaths {
         static let ContentOffset = "contentOffset"
         static let ContentInset = "contentInset"
-        static let Frame = "frame"
         static let PanGestureRecognizerState = "panGestureRecognizer.state"
+        static let SafeAreaInsets = "safeAreaInsets"
     }
     
-    public static var WaveMaxHeight: CGFloat = 70.0
-    public static var MinOffsetToPull: CGFloat = 95.0
-    public static var LoadingContentInset: CGFloat = 50.0
-    public static var LoadingViewSize: CGFloat = 30.0
-	
+    public static var WaveMaxHeight: CGFloat = 81.0
+    public static var MinOffsetToPull: CGFloat = 99.0
+    public static var LoadingContentInset: CGFloat = 54.0
+    public static var LoadingViewSize: CGFloat = 27.0
 }

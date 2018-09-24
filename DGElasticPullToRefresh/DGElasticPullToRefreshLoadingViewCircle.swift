@@ -12,7 +12,7 @@ copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+copies or substantial portions of the Software. 
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -114,7 +114,11 @@ open class DGElasticPullToRefreshLoadingViewCircle: DGElasticPullToRefreshLoadin
     }
     
     fileprivate func currentDegree() -> CGFloat {
-        return shapeLayer.value(forKeyPath: "transform.rotation.z") as! CGFloat
+        // fix crash
+        guard let number = shapeLayer.value(forKeyPath: "transform.rotation.z") as? NSNumber else {
+            return 0.0
+        }
+        return CGFloat(number.floatValue)
     }
     
     override open func tintColorDidChange() {

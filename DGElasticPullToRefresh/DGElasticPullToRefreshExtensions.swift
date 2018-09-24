@@ -99,7 +99,7 @@ public extension UIScrollView {
     
     // MARK: - Methods (Public)
     
-    public func dg_addPullToRefreshWithActionHandler(_ actionHandler: @escaping () -> Void, loadingView: DGElasticPullToRefreshLoadingView?) {
+    public func dg_addPullToRefreshWithActionHandler(loadingView: DGElasticPullToRefreshLoadingView?, _ actionHandler: @escaping () -> Void) {
         isMultipleTouchEnabled = false
         panGestureRecognizer.maximumNumberOfTouches = 1
 
@@ -124,6 +124,10 @@ public extension UIScrollView {
     
     public func dg_setPullToRefreshFillColor(_ color: UIColor) {
         pullToRefreshView?.fillColor = color
+    }
+    
+    public func dg_startLoading() {
+        pullToRefreshView?.startLoading()
     }
     
     public func dg_stopLoading() {

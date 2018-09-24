@@ -20,10 +20,9 @@ class ViewController: UIViewController {
     override func loadView() {
         super.loadView()
         
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.barTintColor = UIColor(red: 57/255.0, green: 67/255.0, blue: 89/255.0, alpha: 1.0)
+        navigationController?.navigationBar.barTintColor = UIColor.black
         
         tableView = UITableView(frame: view.bounds, style: .plain)
         tableView.dataSource = self
@@ -35,11 +34,11 @@ class ViewController: UIViewController {
         
         let loadingView = DGElasticPullToRefreshLoadingViewCircle()
         loadingView.tintColor = UIColor(red: 78/255.0, green: 221/255.0, blue: 200/255.0, alpha: 1.0)
-        tableView.dg_addPullToRefreshWithActionHandler({ [weak self] () -> Void in
+        tableView.dg_addPullToRefreshWithActionHandler(loadingView: loadingView) { [weak self] () -> Void in
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(1.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
                 self?.tableView.dg_stopLoading()
             })
-        }, loadingView: loadingView)
+        }
         tableView.dg_setPullToRefreshFillColor(UIColor(red: 57/255.0, green: 67/255.0, blue: 89/255.0, alpha: 1.0))
         tableView.dg_setPullToRefreshBackgroundColor(tableView.backgroundColor!)
     }
@@ -48,6 +47,10 @@ class ViewController: UIViewController {
         tableView.dg_removePullToRefresh()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tableView.dg_startLoading()
+    }
 }
 
 // MARK: -
@@ -69,11 +72,11 @@ extension ViewController: UITableViewDataSource {
         
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: cellIdentifier)
-            cell!.contentView.backgroundColor = UIColor(red: 250/255.0, green: 250/255.0, blue: 251/255.0, alpha: 1.0)
         }
         
         if let cell = cell {
             cell.textLabel?.text = "\((indexPath as NSIndexPath).row)"
+            cell.contentView.backgroundColor = indexPath.row % 2 == 0 ? UIColor(red: 250/255.0, green: 250/255.0, blue: 251/255.0, alpha: 1.0) : .orange
             return cell
         }
         
@@ -89,6 +92,9 @@ extension ViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        let pushVC = PushViewController()
+        self.navigationController?.pushViewController(pushVC, animated: true)
     }
     
 }
