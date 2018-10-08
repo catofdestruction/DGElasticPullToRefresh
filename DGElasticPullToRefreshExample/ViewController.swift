@@ -14,15 +14,22 @@ class ViewController: UIViewController {
     // MARK: Vars
     
     fileprivate var tableView: UITableView!
+    fileprivate var rows: Int = 30
+    fileprivate let demoTintColor = UIColor(red: 57/255.0, green: 67/255.0, blue: 89/255.0, alpha: 1.0)
     
     // MARK: -
     
     override func loadView() {
         super.loadView()
         
-        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.barTintColor = UIColor.black
+        navigationController?.navigationBar.barTintColor = demoTintColor
+        
+//        navigationController?.navigationBar.isTranslucent = true
+//        navigationController?.navigationBar.shadowImage = UIImage()
+//        navigationController?.navigationBar.barTintColor = UIColor.black
         
         tableView = UITableView(frame: view.bounds, style: .plain)
         tableView.dataSource = self
@@ -32,24 +39,31 @@ class ViewController: UIViewController {
         tableView.backgroundColor = UIColor(red: 250/255.0, green: 250/255.0, blue: 251/255.0, alpha: 1.0)
         view.addSubview(tableView)
         
-        let loadingView = DGElasticPullToRefreshLoadingViewCircle()
-        loadingView.tintColor = UIColor(red: 78/255.0, green: 221/255.0, blue: 200/255.0, alpha: 1.0)
-        tableView.dg_addPullToRefreshWithActionHandler(loadingView: loadingView) { [weak self] () -> Void in
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(1.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
-                self?.tableView.dg_stopLoading()
+        tableView.dg_addPullToRefresh { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
+                self?.tableView.dg_stopRefreshing()
             })
         }
-        tableView.dg_setPullToRefreshFillColor(UIColor(red: 57/255.0, green: 67/255.0, blue: 89/255.0, alpha: 1.0))
-        tableView.dg_setPullToRefreshBackgroundColor(tableView.backgroundColor!)
+        tableView.dg_setPullToRefreshFillColor(demoTintColor)
+
+        tableView.dg_addPullToLoadMore { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
+                self?.rows += 30
+                self?.tableView.dg_stopLoading()
+                self?.tableView.reloadData()
+            })
+        }
+        tableView.dg_setPullToLoadMoreFillColor(demoTintColor)
     }
     
     deinit {
         tableView.dg_removePullToRefresh()
+        tableView.dg_removePullToLoadMore()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        tableView.dg_startLoading()
+        tableView.dg_startRefreshing()
     }
 }
 
@@ -63,7 +77,7 @@ extension ViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 30
+        return rows
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -76,7 +90,7 @@ extension ViewController: UITableViewDataSource {
         
         if let cell = cell {
             cell.textLabel?.text = "\((indexPath as NSIndexPath).row)"
-            cell.contentView.backgroundColor = indexPath.row % 2 == 0 ? UIColor(red: 250/255.0, green: 250/255.0, blue: 251/255.0, alpha: 1.0) : .orange
+            cell.contentView.backgroundColor = UIColor(red: 250/255.0, green: 250/255.0, blue: 251/255.0, alpha: 1.0)
             return cell
         }
         

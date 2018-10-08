@@ -27,14 +27,119 @@ SOFTWARE.
 import UIKit
 import ObjectiveC
 
-// MARK: -
-// MARK: (NSObject) Extension
+// MARK: - (UIScrollView) Extension
+public extension UIScrollView {
+    
+    // MARK: - Vars
+    fileprivate struct dg_associatedKeys {
+        static var pullToRefreshView = "pullToRefreshView"
+        static var pullToLoadMoreView = "pullToLoadMoreView"
+    }
 
+    fileprivate var pullToRefreshView: DGElasticPullView? {
+        get {
+            return objc_getAssociatedObject(self, &dg_associatedKeys.pullToRefreshView) as? DGElasticPullView
+        }
+        set {
+            objc_setAssociatedObject(self, &dg_associatedKeys.pullToRefreshView, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    fileprivate var pullToLoadMoreView: DGElasticPullView? {
+        get {
+            return objc_getAssociatedObject(self, &dg_associatedKeys.pullToLoadMoreView) as? DGElasticPullView
+        }
+        set {
+            objc_setAssociatedObject(self, &dg_associatedKeys.pullToLoadMoreView, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
+    public var maximumOffset: CGFloat {
+        guard self.contentSize.height > 0 else { return self.bounds.height }
+        return self.contentSize.height - self.bounds.height
+    }
+    
+    // MARK: - Methods (Public)
+    public func dg_addPullToRefresh(loadingView: DGElasticPullToRefreshLoadingView? = DGElasticPullToRefreshLoadingViewCircle(),
+                                    actionHandler: @escaping () -> Void) {
+        dg_addElasticPullView(style: .refresh, loadingView: loadingView, actionHandler: actionHandler)
+    }
+    
+    public func dg_addPullToLoadMore(loadingView: DGElasticPullToRefreshLoadingView? = DGElasticPullToRefreshLoadingViewCircle(),
+                                     actionHandler: @escaping () -> Void) {
+        dg_addElasticPullView(style: .loadMore, loadingView: loadingView, actionHandler: actionHandler)
+    }
+    
+    public func dg_removePullToRefresh() {
+        pullToRefreshView?.destroy()
+    }
+    
+    public func dg_removePullToLoadMore() {
+        pullToLoadMoreView?.destroy()
+    }
+    
+    public func dg_startRefreshing() {
+        pullToRefreshView?.start()
+    }
+    
+    public func dg_stopRefreshing() {
+        pullToRefreshView?.stop()
+    }
+
+    public func dg_stopLoading() {
+        pullToLoadMoreView?.stop()
+    }
+    
+    public func dg_setPullToRefreshFillColor(_ color: UIColor) {
+        pullToRefreshView?.fillColor = color
+    }
+    
+    public func dg_setPullToLoadMoreFillColor(_ color: UIColor) {
+        pullToLoadMoreView?.fillColor = color
+    }
+    
+    public func dg_setPullToRefreshBackgroundColor(_ color: UIColor) {
+        pullToRefreshView?.backgroundColor = color
+    }
+    
+    public func dg_setPullToLoadMoreBackgroundColor(_ color: UIColor) {
+        pullToLoadMoreView?.backgroundColor = color
+    }
+    
+    public func dg_setPullToRefreshLoadingViewTintColor(_ color: UIColor) {
+        pullToRefreshView?.loadingView?.tintColor = color
+    }
+    
+    public func dg_setPullToLoadMoreLoadingViewTintColor(_ color: UIColor) {
+        pullToLoadMoreView?.loadingView?.tintColor = color
+    }
+    
+    // MARK: Methods (Private)
+    fileprivate func dg_addElasticPullView(style: DGElasticPullView.DGElasticPullStyle,
+                                           loadingView: DGElasticPullToRefreshLoadingView?,
+                                           actionHandler: @escaping () -> Void) {
+        isMultipleTouchEnabled = false
+        panGestureRecognizer.maximumNumberOfTouches = 1
+        
+        let elasticPullView = DGElasticPullView()
+        elasticPullView.style = style
+        elasticPullView.actionHandler = actionHandler
+        elasticPullView.loadingView = loadingView
+        elasticPullView.backgroundColor = self.backgroundColor
+        if style == .refresh {
+            self.pullToRefreshView = elasticPullView
+        } else {
+            self.pullToLoadMoreView = elasticPullView
+        }
+        addSubview(elasticPullView)
+        elasticPullView.observing = true
+    }
+}
+
+// MARK: - (NSObject) Extension
 public extension NSObject {
     
-    // MARK: -
-    // MARK: Vars
-    
+    // MARK: - Vars
     fileprivate struct dg_associatedKeys {
         static var observersArray = "observers"
     }
@@ -53,9 +158,7 @@ public extension NSObject {
         }
     }
     
-    // MARK: -
-    // MARK: Methods
-    
+    // MARK: - Methods
     public func dg_addObserver(_ observer: NSObject, forKeyPath keyPath: String) {
         let observerInfo = [keyPath : observer]
         
@@ -73,71 +176,9 @@ public extension NSObject {
             removeObserver(observer, forKeyPath: keyPath)
         }
     }
-    
 }
 
-// MARK: -
-// MARK: (UIScrollView) Extension
-
-public extension UIScrollView {
-    
-    // MARK: - Vars
-
-    fileprivate struct dg_associatedKeys {
-        static var pullToRefreshView = "pullToRefreshView"
-    }
-
-    fileprivate var pullToRefreshView: DGElasticPullToRefreshView? {
-        get {
-            return objc_getAssociatedObject(self, &dg_associatedKeys.pullToRefreshView) as? DGElasticPullToRefreshView
-        }
-
-        set {
-            objc_setAssociatedObject(self, &dg_associatedKeys.pullToRefreshView, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
-    
-    // MARK: - Methods (Public)
-    
-    public func dg_addPullToRefreshWithActionHandler(loadingView: DGElasticPullToRefreshLoadingView?, _ actionHandler: @escaping () -> Void) {
-        isMultipleTouchEnabled = false
-        panGestureRecognizer.maximumNumberOfTouches = 1
-
-        let pullToRefreshView = DGElasticPullToRefreshView()
-        self.pullToRefreshView = pullToRefreshView
-        pullToRefreshView.actionHandler = actionHandler
-        pullToRefreshView.loadingView = loadingView
-        addSubview(pullToRefreshView)
-
-        pullToRefreshView.observing = true
-    }
-    
-    public func dg_removePullToRefresh() {
-        pullToRefreshView?.disassociateDisplayLink()
-        pullToRefreshView?.observing = false
-        pullToRefreshView?.removeFromSuperview()
-    }
-    
-    public func dg_setPullToRefreshBackgroundColor(_ color: UIColor) {
-        pullToRefreshView?.backgroundColor = color
-    }
-    
-    public func dg_setPullToRefreshFillColor(_ color: UIColor) {
-        pullToRefreshView?.fillColor = color
-    }
-    
-    public func dg_startLoading() {
-        pullToRefreshView?.startLoading()
-    }
-    
-    public func dg_stopLoading() {
-        pullToRefreshView?.stopLoading()
-    }
-}
-
-// MARK: -
-// MARK: (UIView) Extension
-
+// MARK: - (UIView) Extension
 public extension UIView {
     func dg_center(_ usePresentationLayerIfPossible: Bool) -> CGPoint {
         if usePresentationLayerIfPossible, let presentationLayer = layer.presentation() {
@@ -148,9 +189,7 @@ public extension UIView {
     }
 }
 
-// MARK: -
-// MARK: (UIPanGestureRecognizer) Extension
-
+// MARK: - (UIPanGestureRecognizer) Extension
 public extension UIPanGestureRecognizer {
     func dg_resign() {
         isEnabled = false
@@ -158,9 +197,7 @@ public extension UIPanGestureRecognizer {
     }
 }
 
-// MARK: -
-// MARK: (UIGestureRecognizerState) Extension
-
+// MARK: - (UIGestureRecognizerState) Extension
 public extension UIGestureRecognizer.State {
     func dg_isAnyOf(_ values: [UIGestureRecognizer.State]) -> Bool {
         return values.contains(where: { $0 == self })

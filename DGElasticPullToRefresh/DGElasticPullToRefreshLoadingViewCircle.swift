@@ -64,6 +64,7 @@ open class DGElasticPullToRefreshLoadingViewCircle: DGElasticPullToRefreshLoadin
     
     public override init() {
         super.init(frame: .zero)
+        self.tintColor = .white
         
         shapeLayer.lineWidth = 1.0
         shapeLayer.fillColor = UIColor.clear.cgColor

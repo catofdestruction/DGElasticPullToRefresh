@@ -11,12 +11,12 @@
 		05B92F8D1BD25E7B006D60FB /* DGElasticPullToRefreshExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B92F881BD25E7B006D60FB /* DGElasticPullToRefreshExtensions.swift */; };
 		05B92F8E1BD25E7B006D60FB /* DGElasticPullToRefreshLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B92F891BD25E7B006D60FB /* DGElasticPullToRefreshLoadingView.swift */; };
 		05B92F8F1BD25E7B006D60FB /* DGElasticPullToRefreshLoadingViewCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B92F8A1BD25E7B006D60FB /* DGElasticPullToRefreshLoadingViewCircle.swift */; };
-		05B92F901BD25E7B006D60FB /* DGElasticPullToRefreshView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05B92F8B1BD25E7B006D60FB /* DGElasticPullToRefreshView.swift */; };
 		05CD14691BBE8FEA00AF4030 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CD14681BBE8FEA00AF4030 /* AppDelegate.swift */; };
 		05CD146B1BBE8FEA00AF4030 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CD146A1BBE8FEA00AF4030 /* ViewController.swift */; };
 		05CD14701BBE8FEA00AF4030 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 05CD146F1BBE8FEA00AF4030 /* Assets.xcassets */; };
 		05CD14731BBE8FEA00AF4030 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 05CD14711BBE8FEA00AF4030 /* LaunchScreen.storyboard */; };
 		05FAB8BE1BBEF115004922F1 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05FAB8BD1BBEF115004922F1 /* NavigationController.swift */; };
+		13ADEF9A215DC3FD00FC74E1 /* DGElasticPullView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13ADEF99215DC3FD00FC74E1 /* DGElasticPullView.swift */; };
 		13C836762159124E00D260B7 /* PushViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C836752159124E00D260B7 /* PushViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,7 +25,6 @@
 		05B92F881BD25E7B006D60FB /* DGElasticPullToRefreshExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DGElasticPullToRefreshExtensions.swift; sourceTree = "<group>"; };
 		05B92F891BD25E7B006D60FB /* DGElasticPullToRefreshLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DGElasticPullToRefreshLoadingView.swift; sourceTree = "<group>"; };
 		05B92F8A1BD25E7B006D60FB /* DGElasticPullToRefreshLoadingViewCircle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DGElasticPullToRefreshLoadingViewCircle.swift; sourceTree = "<group>"; };
-		05B92F8B1BD25E7B006D60FB /* DGElasticPullToRefreshView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DGElasticPullToRefreshView.swift; sourceTree = "<group>"; };
 		05CD14651BBE8FEA00AF4030 /* DGElasticPullToRefreshExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DGElasticPullToRefreshExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		05CD14681BBE8FEA00AF4030 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		05CD146A1BBE8FEA00AF4030 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -33,6 +32,7 @@
 		05CD14721BBE8FEA00AF4030 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		05CD14741BBE8FEA00AF4030 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		05FAB8BD1BBEF115004922F1 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		13ADEF99215DC3FD00FC74E1 /* DGElasticPullView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DGElasticPullView.swift; sourceTree = "<group>"; };
 		13C836752159124E00D260B7 /* PushViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -54,7 +54,7 @@
 				05B92F881BD25E7B006D60FB /* DGElasticPullToRefreshExtensions.swift */,
 				05B92F891BD25E7B006D60FB /* DGElasticPullToRefreshLoadingView.swift */,
 				05B92F8A1BD25E7B006D60FB /* DGElasticPullToRefreshLoadingViewCircle.swift */,
-				05B92F8B1BD25E7B006D60FB /* DGElasticPullToRefreshView.swift */,
+				13ADEF99215DC3FD00FC74E1 /* DGElasticPullView.swift */,
 			);
 			path = DGElasticPullToRefresh;
 			sourceTree = SOURCE_ROOT;
@@ -162,9 +162,9 @@
 			files = (
 				05B92F8C1BD25E7B006D60FB /* DGElasticPullToRefreshConstants.swift in Sources */,
 				05CD146B1BBE8FEA00AF4030 /* ViewController.swift in Sources */,
-				05B92F901BD25E7B006D60FB /* DGElasticPullToRefreshView.swift in Sources */,
 				05B92F8E1BD25E7B006D60FB /* DGElasticPullToRefreshLoadingView.swift in Sources */,
 				05FAB8BE1BBEF115004922F1 /* NavigationController.swift in Sources */,
+				13ADEF9A215DC3FD00FC74E1 /* DGElasticPullView.swift in Sources */,
 				13C836762159124E00D260B7 /* PushViewController.swift in Sources */,
 				05B92F8F1BD25E7B006D60FB /* DGElasticPullToRefreshLoadingViewCircle.swift in Sources */,
 				05CD14691BBE8FEA00AF4030 /* AppDelegate.swift in Sources */,
