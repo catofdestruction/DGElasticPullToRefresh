@@ -171,7 +171,7 @@ extension DGElasticPullView {
             if let scrollView = self.superview as? UIScrollView {
                 self.scrollView = scrollView
             } else {
-                fatalError("DGElasticPullStateView must be subview of UIScrollView")
+                fatalError("DGElasticPullView must be subview of UIScrollView")
             }
         }
     }
@@ -237,6 +237,7 @@ extension DGElasticPullView {
     }
     
     fileprivate func layoutLoadingView() {
+        guard let loadingView = self.loadingView else { return }
         let width = bounds.width
         let height: CGFloat = bounds.height
         var frame: CGRect = .zero
@@ -252,9 +253,9 @@ extension DGElasticPullView {
         }
         
         frame = CGRect(x: (width - loadingViewSize) / 2.0, y: originY, width: loadingViewSize, height: loadingViewSize)
-        loadingView?.frame = frame
-        loadingView?.maskLayer.frame = convert(shapeLayer.frame, to: loadingView)
-        loadingView?.maskLayer.path = shapeLayer.path
+        loadingView.frame = state == .stopped ? .zero : frame
+        loadingView.maskLayer.frame = convert(shapeLayer.frame, to: loadingView)
+        loadingView.maskLayer.path = shapeLayer.path
     }
 }
 
@@ -366,15 +367,19 @@ extension DGElasticPullView {
         
         var contentInset = scrollView.contentInset
         if style == .refresh {
+            contentInset.top = self.originalContentInset.top
             switch state {
             case .animatingBounce:
                 contentInset.top += self.pullViewHeight
+                if #available(iOS 11.0, *) {
+                    // correct the animation bounce position
+                    contentInset.top -= self.scrollViewSafeAreaInsets.top
+                }
             case .loading:
                 contentInset.top += DGElasticPullToRefreshConstants.LoadingContentInset
             case .animatingToStopped:
-                contentInset.top = self.originalContentInset.top
                 if #available(iOS 11.0, *) {
-                    // correct the scorll view content inset when stopped
+                    // correct the scorll view content inset when animatingToStopped
                     contentInset.top -= self.scrollViewSafeAreaInsets.top
                 }
             default:

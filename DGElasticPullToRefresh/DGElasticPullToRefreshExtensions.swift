@@ -55,7 +55,7 @@ public extension UIScrollView {
     }
     
     public var maximumOffset: CGFloat {
-        guard self.contentSize.height > 0 else { return self.bounds.height }
+        if self.contentSize.height < self.bounds.height { return self.bounds.height }
         return self.contentSize.height - self.bounds.height
     }
     

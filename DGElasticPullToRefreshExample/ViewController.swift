@@ -16,7 +16,8 @@ class ViewController: UIViewController {
     fileprivate var tableView: UITableView!
     fileprivate var rows: Int = 30
     fileprivate let demoTintColor = UIColor(red: 57/255.0, green: 67/255.0, blue: 89/255.0, alpha: 1.0)
-    
+    fileprivate let tableViewBgColor = UIColor(red: 250/255.0, green: 250/255.0, blue: 251/255.0, alpha: 1.0)
+
     // MARK: -
     
     override func loadView() {
@@ -35,18 +36,22 @@ class ViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        tableView.separatorColor = UIColor(red: 230/255.0, green: 230/255.0, blue: 231/255.0, alpha: 1.0)
-        tableView.backgroundColor = UIColor(red: 250/255.0, green: 250/255.0, blue: 251/255.0, alpha: 1.0)
+        tableView.separatorColor = UIColor(red: 230/255.0, green: 230/255.0, blue: 230/255.0, alpha: 1.0)
+        tableView.backgroundColor = tableViewBgColor
         view.addSubview(tableView)
         
-        tableView.dg_addPullToRefresh { [weak self] in
+        let loadingView_refresh = DGElasticPullToRefreshLoadingViewCircle()
+        loadingView_refresh.tintColor = tableViewBgColor
+        tableView.dg_addPullToRefresh(loadingView: loadingView_refresh) { [weak self] in
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
                 self?.tableView.dg_stopRefreshing()
             })
         }
         tableView.dg_setPullToRefreshFillColor(demoTintColor)
 
-        tableView.dg_addPullToLoadMore { [weak self] in
+        let loadingView_loadMore = DGElasticPullToRefreshLoadingViewCircle()
+        loadingView_loadMore.tintColor = tableViewBgColor
+        tableView.dg_addPullToLoadMore(loadingView: loadingView_loadMore) { [weak self] in
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
                 self?.rows += 30
                 self?.tableView.dg_stopLoading()
@@ -90,7 +95,8 @@ extension ViewController: UITableViewDataSource {
         
         if let cell = cell {
             cell.textLabel?.text = "\((indexPath as NSIndexPath).row)"
-            cell.contentView.backgroundColor = UIColor(red: 250/255.0, green: 250/255.0, blue: 251/255.0, alpha: 1.0)
+            cell.textLabel?.textColor = demoTintColor
+            cell.contentView.backgroundColor = tableViewBgColor
             return cell
         }
         
