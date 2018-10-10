@@ -285,9 +285,8 @@ extension DGElasticPullView {
     
     fileprivate func didStopAnimation(previousState: DGElasticPullState) {
         self.loadingView?.stopLoading()
-        if style == .loadMore && previousState == .animatingToStopped {
-            let offsetY = self.scrollView.contentOffset.y + DGElasticPullToRefreshConstants.MinOffsetToPull
-            self.scrollView.setContentOffset(CGPoint(x: 0, y: offsetY), animated: true)
+        if previousState == .animatingToStopped {            
+            self.scrollToShowLoadMoreContent()
         }
     }
     
@@ -420,6 +419,13 @@ extension DGElasticPullView {
         } else {
             animationBlock()
             completionBlock()
+        }
+    }
+    
+    fileprivate func scrollToShowLoadMoreContent() {
+        if style == .loadMore && scrollView.contentOffset.y < scrollView.maximumOffset {
+            let offsetY = self.scrollView.contentOffset.y + DGElasticPullToRefreshConstants.MinOffsetToPull
+            self.scrollView.setContentOffset(CGPoint(x: 0, y: offsetY), animated: true)
         }
     }
 }
